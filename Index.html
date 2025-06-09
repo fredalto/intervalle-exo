@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reconnaissance d'intervalles</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f9f9f9;
+  }
+  #pageReglages {
+    margin-bottom: 20px;
+  }
+  select {
+    width: 200px;
+    height: 100px;
+  }
+  button {
+    margin: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  #porteeCanvas {
+    border: 1px solid #ccc;
+    background: #fff;
+  }
+</style>
+</head>
+<body>
+
+<div id="pageReglages">
+  <label for="intervalleSelect">Choisis les intervalles :</label><br />
+  <select id="intervalleSelect" multiple>
+    <option value="2">Seconde</option>
+    <option value="3">Tierce</option>
+    <option value="4">Quarte</option>
+    <option value="5">Quinte</option>
+    <option value="6">Sixte</option>
+    <option value="7">Septième</option>
+    <option value="8">Octave</option>
+  </select><br />
+  <button id="btnSelectAll">Tout sélectionner</button>
+  <button id="btnDeselectAll">Tout désélectionner</button>
+</div>
+
+<canvas id="porteeCanvas" width="700" height="200"></canvas>
+
+<script>
+  const canvas = document.getElementById("porteeCanvas");
+  const ctx = canvas.getContext("2d");
+
+  // Dessine la portée avec lignes principales + lignes supplémentaires
+  function dessinerPortee() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const startY = 40;
+    const lineSpacing = 20;
+
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 1.5;
+
+    // Lignes de la portée (5 lignes)
+    for (let i = 0; i < 5; i++) {
+      const y = startY + i * lineSpacing;
+      ctx.beginPath();
+      ctx.moveTo(50, y);
+      ctx.lineTo(canvas.width - 50, y);
+      ctx.stroke();
+    }
+
+    // Lignes supplémentaires (dessus et dessous)
+    ctx.lineWidth = 1;
+    const linesSup = [
+      startY - lineSpacing,
+      startY - lineSpacing * 2,
+      startY + lineSpacing * 5,
+      startY + lineSpacing * 6
+    ];
+    linesSup.forEach(y => {
+      ctx.beginPath();
+      ctx.moveTo(100, y);
+      ctx.lineTo(canvas.width - 100, y);
+      ctx.stroke();
+    });
+  }
+
+  dessinerPortee();
+
+  // Gestion des boutons
+  document.getElementById("btnSelectAll").addEventListener("click", () => {
+    const select = document.getElementById("intervalleSelect");
+    for (let i = 0; i < select.options.length; i++) {
+      select.options[i].selected = true;
+    }
+  });
+
+  document.getElementById("btnDeselectAll").addEventListener("click", () => {
+    const select = document.getElementById("intervalleSelect");
+    for (let i = 0; i < select.options.length; i++) {
+      select.options[i].selected = false;
+    }
+  });
+
+</script>
+
+</body>
+</html>
